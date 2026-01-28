@@ -1,0 +1,24 @@
+# Development configuration
+# NOTE: Never commit real credentials. Use environment variables in production.
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/business_management}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:changeme}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+
+server:
+  port: ${PORT:8081}

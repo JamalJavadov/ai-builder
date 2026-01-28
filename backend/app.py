@@ -174,22 +174,27 @@ def apply_operations(root_dir: Path, operations: list[ApplyOperation]) -> list[s
     messages: list[str] = []
     for operation in operations:
         action = operation.action.lower()
-        destination = safe_join(root_dir, operation.path)
+        normalized_path = Path(operation.path).as_posix().lstrip("./")
+        if normalized_path.startswith(f"{root_dir.name}/"):
+            raise ValueError(
+                f"Path must be relative to project root. Remove leading '{root_dir.name}/'."
+            )
+        destination = safe_join(root_dir, normalized_path)
         if action in {"create", "update"}:
             destination.parent.mkdir(parents=True, exist_ok=True)
             if operation.content is None:
-                raise ValueError(f"Missing content for {action} {operation.path}")
+                raise ValueError(f"Missing content for {action} {normalized_path}")
             destination.write_text(operation.content, encoding="utf-8")
-            messages.append(f"{action}: {operation.path}")
+            messages.append(f"{action}: {normalized_path}")
         elif action == "delete":
             if destination.exists():
                 if destination.is_dir():
                     shutil.rmtree(destination)
                 else:
                     destination.unlink()
-                messages.append(f"deleted: {operation.path}")
+                messages.append(f"deleted: {normalized_path}")
             else:
-                messages.append(f"skipped (missing): {operation.path}")
+                messages.append(f"skipped (missing): {normalized_path}")
         else:
             raise ValueError(f"Unknown action: {operation.action}")
     return messages
@@ -251,7 +256,9 @@ async def build_prompt(request: PromptRequest) -> JSONResponse:
         "contains the full project structure and source code. Based on the user's "
         "task, output a JSON array of file operations. Each operation must be an object "
         "with: action (create|update|delete), path (relative path), and content (for "
-        "create/update). Return JSON only, no markdown."
+        "create/update). Paths must be relative to the project root shown in the DOCX "
+        "tree (e.g., 'src/main/java/...'), and must not include absolute paths or the "
+        "project folder name. Return JSON only, no markdown."
     )
     prompt_payload = {
         "task": request.task,

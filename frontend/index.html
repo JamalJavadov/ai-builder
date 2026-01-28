@@ -45,10 +45,10 @@
 
     <section class="card">
       <h2>3) Apply AI JSON Output</h2>
-      <label for="projectRoot">Project root (server-side path)</label>
-      <input id="projectRoot" type="text" placeholder="/absolute/path/to/java/project" />
+      <label for="projectRoot">Project root (server-side folder path)</label>
+      <input id="projectRoot" type="text" placeholder="/absolute/path/to/java/project  (folder only)" />
       <label for="jsonInput">Paste JSON operations</label>
-      <textarea id="jsonInput" placeholder='[{"action":"create","path":"src/...","content":"..."}]'></textarea>
+      <textarea id="jsonInput" placeholder='[{"action":"create","path":"src/main/java/...","content":"..."}]'></textarea>
       <button id="applyPatch">Apply Patch</button>
       <pre id="applyOutput"></pre>
     </section>
