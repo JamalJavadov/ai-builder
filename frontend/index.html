@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Analyzer Bot</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app__header">
+      <h1>Project Analyzer Bot</h1>
+      <p>Generate a full DOCX export, craft AI prompts, and apply structured updates.</p>
+    </header>
+
+    <section class="card">
+      <h2>1) Analyze a Project</h2>
+      <div class="grid">
+        <div>
+          <label for="projectPath">Project path (server-side)</label>
+          <div class="inline">
+            <input id="projectPath" type="text" placeholder="/absolute/path/to/java/project" />
+            <button id="analyzePath">Analyze</button>
+          </div>
+        </div>
+        <div>
+          <label for="folderUpload">Or upload a folder (client-side)</label>
+          <input id="folderUpload" type="file" webkitdirectory multiple />
+          <button id="analyzeUpload">Upload & Analyze</button>
+        </div>
+      </div>
+      <div id="analyzeStatus" class="status"></div>
+    </section>
+
+    <section class="card">
+      <h2>2) Generate a Prompt</h2>
+      <label for="taskInput">Task</label>
+      <textarea id="taskInput" placeholder="Create a Book entity and generate CRUD."></textarea>
+      <label for="projectSummary">Optional project summary</label>
+      <textarea id="projectSummary" placeholder="Short project notes to add into the prompt."></textarea>
+      <button id="buildPrompt">Build Prompt</button>
+      <pre id="promptOutput"></pre>
+    </section>
+
+    <section class="card">
+      <h2>3) Apply AI JSON Output</h2>
+      <label for="projectRoot">Project root (server-side path)</label>
+      <input id="projectRoot" type="text" placeholder="/absolute/path/to/java/project" />
+      <label for="jsonInput">Paste JSON operations</label>
+      <textarea id="jsonInput" placeholder='[{"action":"create","path":"src/...","content":"..."}]'></textarea>
+      <button id="applyPatch">Apply Patch</button>
+      <pre id="applyOutput"></pre>
+    </section>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
