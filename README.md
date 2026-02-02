@@ -18,7 +18,7 @@ pip install -r requirements.txt
 
 ## Run
 ```bash
-uvicorn backend.app:app --reload --port 8000
+uvicorn backend.app.main:app --reload --port 8000
 ```
 Open http://localhost:8000 in your browser.
 
